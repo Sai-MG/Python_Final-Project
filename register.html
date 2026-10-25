@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Create account{% endblock %}{% block auth_content %}
+<div class="auth-card"><span class="eyebrow">GET STARTED</span><h1>Create your account.</h1><p class="muted">A clearer picture of your money starts here.</p>
+<form method="post"><label>Full name</label><input name="name" placeholder="Your name" required><label>Email address</label><input type="email" name="email" placeholder="you@example.com" required><label>Password <small>(minimum 8 characters)</small></label><input type="password" name="password" minlength="8" required><label>Confirm password</label><input type="password" name="confirm_password" minlength="8" required><button class="btn primary full">Create account →</button></form>
+<p class="auth-foot">Already registered? <a href="{{ url_for('login') }}">Sign in</a></p></div>{% endblock %}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}FinTrack{% endblock %} | FinTrack</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+{% if session.get('user_id') %}
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-icon">F</span><span>FinTrack<small>PERSONAL FINANCE</small></span></a>
+    <div class="nav-label">WORKSPACE</div>
+    <nav>
+      <a href="{{ url_for('dashboard') }}">▦ <span>Dashboard</span></a>
+      <a href="{{ url_for('transactions') }}">⇄ <span>Transactions</span></a>
+      <a href="{{ url_for('budgets') }}">◷ <span>Budgets</span></a>
+      <a href="{{ url_for('goals') }}">◎ <span>Savings goals</span></a>
+      <a href="{{ url_for('reports') }}">▤ <span>Reports</span></a>
+    </nav>
+    <div class="sidebar-bottom"><div class="user-badge">{{ session.get('user_name','User')[:1]|upper }}</div><div class="user-text">{{ session.get('user_name','User') }}<small>Your account</small></div><a class="logout" href="{{ url_for('logout') }}">↗</a></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div><span class="eyebrow">PERSONAL FINANCE</span><h1>{% block heading %}Dashboard{% endblock %}</h1></div><div class="top-actions"><span class="today">{{ today }}</span><span class="avatar">{{ session.get('user_name','U')[:1]|upper }}</span></div></header>
+    <section class="content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </section>
+    <footer>FinTrack <span>•</span> Make every rupee count.</footer>
+  </main>
+</div>
+{% else %}
+<div class="auth-shell"><a class="brand auth-brand" href="{{ url_for('login') }}"><span class="brand-icon">F</span><span>FinTrack<small>PERSONAL FINANCE</small></span></a>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+  {% endwith %}
+  {% block auth_content %}{% endblock %}
+</div>
+{% endif %}
+{% block scripts %}{% endblock %}
+</body></html>
